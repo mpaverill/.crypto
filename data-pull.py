@@ -19,6 +19,7 @@ def get_data(currency_name):
     url = base_url.format(currency_name)
     html_response = requests.get(url).text.encode('utf-8')
     soup = BeautifulSoup(html_response, 'html.parser')
+    print(len(soup))
     table = soup.find_all('table')[0]
     elements = table.find_all("tr")
     with open("./{0}_price.csv".format(currency_name.replace("-","_")),"w") as ofile:
