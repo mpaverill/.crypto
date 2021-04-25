@@ -32,3 +32,4 @@ if __name__ == "__main__":
     for currency_name in currency_name_list:
         get_data(currency_name)
         pass
+    

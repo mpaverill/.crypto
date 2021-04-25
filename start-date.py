@@ -9,25 +9,24 @@
 import csv
 
 # find last earliest recorded year in csv file
-with open('DATA/ZRX.csv', newline='') as csvfile:
-    file = csvfile.readlines()
-    length = len(file)
-    for i in range((length-1), 0, -1):
-        print(file[i])
-        break
-
-        # last_line = file[i]
-        # year = int(last_line[6:10])
-        # month1 = int(last_line[3:5])
-        # next_line = file[i-1]
-        # month2 = int(next_line[3:5])
-        # if month2 - month1 == 0:
-        #     earliest_date = last_line
-        #     break
-        # print(earliest_date)
-        # elif month2 - month1 > 0:
-        #     i = -2
-        #     for i in range(length-1):
-        #         last_line = file[i]
-        #         next_line = file[i-1] 
-
+with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
+    file = csv.reader(top200, dialect='excel', delimiter=',', quotechar='|')
+    for row in file:
+        path1 = 'DATA/'
+        path2 = row[0]
+        path3 = '.csv'
+        path = path1 + path2 + path3
+        with open(path, newline='') as csvfile:
+            file = csvfile.readlines()
+            length = len(file)
+            earliest_dates = []
+            for i in range((length-1), 0, -1):
+                date = file[i]
+                month = int(date[3:5])
+                date2 = file[i-1]
+                month2 = int(date2[3:5])
+                if (month2 - month) == 0:
+                    earliest_dates.append(date[:10])
+                    earliest_dates.append(' '+row[0])
+                    print(earliest_dates)
+                    break
