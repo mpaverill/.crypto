@@ -12,6 +12,7 @@ def yearSort(dates):
     return dates[6:10]
 
 # find last earliest recorded year in csv file
+print("These assets have a jump in at least one month recorded:")
 with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
     file = csv.reader(top200, dialect='excel', delimiter=',', quotechar='|')
     earliest_dates = []
