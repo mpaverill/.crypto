@@ -8,10 +8,14 @@
 
 import csv
 
-# find earliest recorded year for each coin
-# the data must be taken on a 24 hour basis in order to qualify for the earliest year
+def yearSort(dates):
+    return dates[6:10]
+
+# find last earliest recorded year in csv file
+print("These assets have a jump in at least one month recorded:")
 with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
     file = csv.reader(top200, dialect='excel', delimiter=',', quotechar='|')
+    earliest_dates = []
     for row in file:
         path1 = 'DATA/'
         path2 = row[0]
@@ -20,7 +24,6 @@ with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
         with open(path, newline='') as csvfile:
             file = csvfile.readlines()
             length = len(file)
-            earliest_dates = []
             for i in range((length-1), 0, -1):
                 date = file[i]
                 month = int(date[3:5])
@@ -28,6 +31,12 @@ with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
                 month2 = int(date2[3:5])
                 if (month2 - month) == 0:
                     earliest_dates.append(date[:10])
-                    earliest_dates.append(' '+row[0])
-                    print(earliest_dates)
                     break
+                else:
+                    print(row[0])
+earliest_dates.sort(key=yearSort)
+file1 = open('earliest_dates.txt', 'w')
+for item in earliest_dates:
+    file1.writelines(item+'\n')
+file1.close()
+
