@@ -2,6 +2,7 @@ from cryptocmd import CmcScraper
 import shutil
 import csv
 
+print("Collecting Data from CoinMarketCap")
 # generate list of top 200 crypto tickers by market cap
 top_200_tickers = []
 with open('top_200.csv', newline='') as csvfile:
