@@ -33,14 +33,14 @@ float_data = np.zeros((max_samples, 200))
 #get the path name for each asset
 with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
     file = csv.reader(top200, dialect='excel', delimiter=',', quotechar='|')
-    r = 0
     c = 0
     for row in file: #iterates through each ASSET
         path1 = 'DATA/'
         path2 = row[0]
         path3 = '.csv'
         path = path1 + path2 + path3
-        
+        r = 0
+
         #count number of samples in order to determine the number of missing data points
         with open(path, newline='') as asset:
             file = csv.reader(asset, dialect='excel', delimiter=',', quotechar='|')
@@ -61,12 +61,14 @@ with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
                 openPrice = float(j[1])
                 float_data[r][c] = openPrice
                 r += 1
-        break
-    print(float_data[:][:])
-        # phrase = '/200 Datasets Complete'
-        # num_complete = str(r + 1)
-        # print(num_complete + phrase)
-        # c += 1
+        c += 1
+        phrase = '/200 Datasets Complete'
+        num_complete = str(c)
+        print(num_complete + phrase)
 
-        # Left off iterating through each asset one at a time. For each iteration, the opening price for each timestep will be indexed into the float_data row-by-row. The next step is
-        # converting the opening prices to floats and placing them directly into the float_data tensor.
+print(float_data[:][:])
+
+# save to csv file
+np.savetxt('float_data.csv', float_data, delimiter=',')
+
+#Finished filling float_data tensor with opening prices in float format. I think the next step is normalizing each column (asset) on a scale of 0-1.
