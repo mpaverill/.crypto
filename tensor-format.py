@@ -66,9 +66,14 @@ with open('top_200.csv', newline='', encoding='utf-8-sig') as top200:
         num_complete = str(c)
         print(num_complete + phrase)
 
-print(float_data[:][:])
-
 # save to csv file
 np.savetxt('float_data.csv', float_data, delimiter=',')
 
+# split data into traing, validation, and test data (70%, 20%, 10%)
+train_data = float_data[max_samples:max_samples - int(.7*r):-1]
+end_row = int(int(train_data.shape[0]) - max_samples * .2)
+val_data = float_data[max_samples - int(.7*r): end_row]
+#test_data = float_data[end_row:-1]
+print(val_data)
+print(val_data.shape[0])
 #Finished filling float_data tensor with opening prices in float format. I think the next step is normalizing each column (asset) on a scale of 0-1.
