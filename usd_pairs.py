@@ -1,6 +1,6 @@
 import csv
 
-def avail_pairs ():
+def usd_pairs ():
     with open("bit-pairs.txt", newline='') as pairs:
         file = csv.reader(pairs, dialect='excel', delimiter=',', quotechar='|')
         USDCount = 0
@@ -15,3 +15,4 @@ def avail_pairs ():
     for item in USDList:
         file1.writelines(item+'\n')
     file1.close()
+    return USDList
