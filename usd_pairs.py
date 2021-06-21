@@ -10,9 +10,11 @@ def usd_pairs ():
         for i in range(len(pairList)):
             if 'USD' in pairList[i]:
                 USDCount += 1
-                USDList.append(pairList[i])
+                USDList.append(pairList[i].strip('\"'))
     file1 = open('usd_pairs.txt', 'w+')
     for item in USDList:
         file1.writelines(item+'\n')
     file1.close()
     return USDList
+
+usd_pairs()

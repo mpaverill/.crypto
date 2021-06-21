@@ -43,7 +43,6 @@ save_path = './DATA_BITFINEX'
 if os.path.exists(save_path) is False:
     os.mkdir(save_path)
 
-i = 0
 for pair in pairs:
     pair_data = fetch_data(start=t_start, stop=t_stop, symbol=pair, interval=bin_size, tick_limit=limit, step=time_step)
 
@@ -55,14 +54,13 @@ for pair in pairs:
     names = ['time', 'open', 'close', 'high', 'low', 'volume']
     df = pd.DataFrame(pair_data, columns=names)
     df.drop_duplicates(inplace=True)
-    # df['time'] = pd.to_datetime(df['time'], unit='ms')
+    df['time'] = pd.to_datetime(df['time'], unit='ms')
     df.set_index('time', inplace=True)
     df.sort_index(inplace=True)
 
     print('Done downloading data. Saving to .csv.')
-    df.to_csv('{}/bitfinex_{}.csv'.format(save_path, pair))
+    print(df)
+    df.to_csv(r'./DATA_BITFINEX/1INCH.csv', index=True)
     print('Done saving data. Moving to next pair.')
-    i += 1
-    if (i > 3):
-        break
+    break
 print('Done retrieving data')
