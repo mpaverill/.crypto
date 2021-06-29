@@ -30,10 +30,10 @@ bin_size = '15m'
 limit = 1000
 time_step = 1000 * 900 * limit
 
-t_start = datetime.datetime(2021, 6, 1, 0, 0)
+t_start = datetime.datetime(2011, 6, 1, 0, 0)
 t_start = time.mktime(t_start.timetuple()) * 1000
 
-t_stop = datetime.datetime(2021, 6, 3, 23, 59)
+t_stop = datetime.datetime(2021, 2, 3, 23, 59)
 t_stop = time.mktime(t_stop.timetuple()) * 1000
 
 pairs = usd_pairs()
