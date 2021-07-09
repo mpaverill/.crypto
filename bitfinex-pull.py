@@ -1,66 +1,57 @@
 from usd_pairs import usd_pairs
-import bitfinex
+from fetch_data import fetch_data
 import pandas as pd
 import numpy as np
 import datetime
 import time
 import os
 
+def data_pull():
+    # Define query parameters
+    bin_size = '15m'
+    limit = 1000
+    time_step = 1000 * 900 * limit
 
-# Create a function to fetch the data
-def fetch_data(start, stop, symbol, interval, tick_limit, step):
-    # Create api instance
-    api_v2 = bitfinex.bitfinex_v2.api_v2()
+    t_start = datetime.datetime(2021, 3, 8, 0, 0)
+    t_start = time.mktime(t_start.timetuple()) * 1000
 
-    data = []
-    start = start - step
-    while start < stop:
-        start = start + step
-        end = start + step
-        res = api_v2.candles(symbol=symbol, interval=interval, limit=tick_limit, start=start, end=end)
-        data.extend(res)
-        print('Retrieving data from {} to {} for {}'.format(pd.to_datetime(start, unit='ms'),
-                                                            pd.to_datetime(end, unit='ms'), symbol))
-        time.sleep(1.5)
-    return data
+    t_stop = datetime.datetime(2021, 7, 8, 23, 59)
+    t_stop = time.mktime(t_stop.timetuple()) * 1000
 
+    pairs = usd_pairs()
 
-# Define query parameters
-bin_size = '15m'
-limit = 1000
-time_step = 1000 * 900 * limit
+    save_path = './DATA_BITFINEX'
 
-t_start = datetime.datetime(2011, 6, 1, 0, 0)
-t_start = time.mktime(t_start.timetuple()) * 1000
+    if os.path.exists(save_path) is False:
+        os.mkdir(save_path)
+    i = 0
+    for pair in pairs:
+        pair_data = fetch_data(start=t_start, stop=t_stop, symbol=pair, interval=bin_size, tick_limit=limit, step=time_step)
 
-t_stop = datetime.datetime(2021, 2, 3, 23, 59)
-t_stop = time.mktime(t_stop.timetuple()) * 1000
+        # Remove error messages
+        ind = [np.ndim(x) != 0 for x in pair_data]
+        pair_data = [i for (i, v) in zip(pair_data, ind) if v]
 
-pairs = usd_pairs()
+        # Create pandas data frame and clean data
+        names = ['time', 'open', 'close', 'high', 'low', 'volume']
+        df = pd.DataFrame(pair_data, columns=names)
+        df.drop_duplicates(inplace=True)
+        df['time'] = pd.to_datetime(df['time'], unit='ms')
+        df.set_index('time', inplace=True)
+        df.sort_index(inplace=True)
 
-save_path = './DATA_BITFINEX'
+        print('Done downloading data. Saving to .csv.')
+        path1 = './DATA_BITFINEX/'
+        path2 = pair
+        path3 = '.csv'
+        path4 = path2.replace(':','_')
+        path = path1 + path4 + path3
+        print(path)
+        df.to_csv(path, index=True)
+        print('Done saving data. Moving to next pair.')
+        i += 1
+        if i == 3:
+            break
+    print('Done retrieving data')
 
-if os.path.exists(save_path) is False:
-    os.mkdir(save_path)
-
-for pair in pairs:
-    pair_data = fetch_data(start=t_start, stop=t_stop, symbol=pair, interval=bin_size, tick_limit=limit, step=time_step)
-
-    # Remove error messages
-    ind = [np.ndim(x) != 0 for x in pair_data]
-    pair_data = [i for (i, v) in zip(pair_data, ind) if v]
-
-    # Create pandas data frame and clean data
-    names = ['time', 'open', 'close', 'high', 'low', 'volume']
-    df = pd.DataFrame(pair_data, columns=names)
-    df.drop_duplicates(inplace=True)
-    df['time'] = pd.to_datetime(df['time'], unit='ms')
-    df.set_index('time', inplace=True)
-    df.sort_index(inplace=True)
-
-    print('Done downloading data. Saving to .csv.')
-    print(df)
-    df.to_csv(r'./DATA_BITFINEX/1INCH.csv', index=True)
-    print('Done saving data. Moving to next pair.')
-    break
-print('Done retrieving data')
+data_pull()
