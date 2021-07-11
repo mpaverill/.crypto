@@ -1,6 +1,8 @@
+#IF RUNNING THIS DATA GRAB AT A 1 MINUTE RESOLUTION GOING BACK TO 2013...IT IS ESTIMATED TO TAKE 12.07 DAYS
+
 from usd_pairs import usd_pairs
 from fetch_data import fetch_data
-import pandas as pd
+import pandas as pd #pip install pandas
 import numpy as np
 import datetime
 import time
@@ -8,14 +10,15 @@ import os
 
 def data_pull():
     # Define query parameters
-    bin_size = '15m'
+    bin_size = '1m' #resolution in minutes
     limit = 1000
-    time_step = 1000 * 900 * limit
+    resolution_minutes = 1 #resolution in minutes
+    time_step = 1000 * (60*resolution_minutes) * limit
 
-    t_start = datetime.datetime(2021, 3, 8, 0, 0)
+    t_start = datetime.datetime(2013, 1, 1, 0, 0)
     t_start = time.mktime(t_start.timetuple()) * 1000
 
-    t_stop = datetime.datetime(2021, 7, 8, 23, 59)
+    t_stop = datetime.datetime(2021, 7, 10, 23, 59)
     t_stop = time.mktime(t_stop.timetuple()) * 1000
 
     pairs = usd_pairs()
@@ -24,7 +27,7 @@ def data_pull():
 
     if os.path.exists(save_path) is False:
         os.mkdir(save_path)
-    i = 0
+    
     for pair in pairs:
         pair_data = fetch_data(start=t_start, stop=t_stop, symbol=pair, interval=bin_size, tick_limit=limit, step=time_step)
 
@@ -49,9 +52,6 @@ def data_pull():
         print(path)
         df.to_csv(path, index=True)
         print('Done saving data. Moving to next pair.')
-        i += 1
-        if i == 3:
-            break
     print('Done retrieving data')
 
 data_pull()
