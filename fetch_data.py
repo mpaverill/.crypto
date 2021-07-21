@@ -2,7 +2,6 @@ import bitfinex #pip install bitfinex-tencars ...... pip install requests
 import time
 import pandas as pd
 from requests.models import parse_header_links
-import pandas as pd
 
 # Create a function to fetch the data
 def fetch_data(start, stop, symbol, interval, tick_limit, step):

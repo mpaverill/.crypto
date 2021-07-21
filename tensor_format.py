@@ -16,6 +16,7 @@ def tensor_format():
     #     max_timesteps = (len(data)) - 1
     
     # add zeros to each asset's missing data one asset at-a-time
+    max_timesteps = 3420458
     with open('tensor_alts.csv', newline='', encoding='utf-8-sig') as file:
         reader = csv.reader(file, delimiter = ",")
         alt_list = list(reader)
@@ -25,7 +26,7 @@ def tensor_format():
             reader = csv.reader(file, delimiter = ",")
             data = list(reader)
             timesteps = (len(data)) - 1
-        add_zeros(path, timesteps)
+        add_zeros(path, timesteps, max_timesteps)
         break
 
 
