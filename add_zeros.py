@@ -8,7 +8,7 @@ def add_zeros(file_name, num_rows, max_rows):
     names = ['time', 'open']
     df1 = pd.DataFrame(np.zeros((miss_rows, 2)), dtype=float, columns=names)
     
-    df2 = pd.read_csv('DATA_BITFINEX/test.csv')
+    df2 = pd.read_csv('test.csv')
     del df2['Unnamed: 0']
     del df2['volume']
     del df2['low']
