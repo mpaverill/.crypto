@@ -3,21 +3,32 @@
 # fill in tensor one asset at-a-time
 # Start date is 03/31/13
 # timestamps correspond to equivalent dates between assets
+# max timesteps = 3420458
 import csv
 from add_zeros import add_zeros
 import numpy as np
+import pandas as pd
 
 def tensor_format():
-
-    # number of timesteps in BTC dataset
-    # with open('DATA_BITFINEX/btcusd.csv',"r", newline='', encoding='utf-8-sig') as file:
-    #     reader = csv.reader(file, delimiter = ",")
-    #     data = list(reader)
-    #     max_timesteps = (len(data)) - 1
     
-    # add zeros to each asset's missing data one asset at-a-time
-    max_timesteps = 3420458
+    # fill tensor with timesteps and find max number of timesteps using BTC
+    with open('DATA_BITFINEX/btcusd.csv',"r", newline='', encoding='utf-8-sig') as file:
+        next(file, None)  #skip the headers
+        reader = csv.reader(file, delimiter = ",")
+        data = list(reader)
+        max_timesteps = (len(data))
+        timesteps = []
+        i = 0
+        for row in data:
+            timestamp = row[0]
+            timesteps.append(timestamp)
+            i += 1
+    col_names = ['time']
+    tensor = pd.DataFrame(data=timesteps, dtype=float, columns=col_names)      
+
+    # add zeros to missing data and insert into tensor
     with open('tensor_alts.csv', newline='', encoding='utf-8-sig') as file:
+        next(file, None)  #skip BTC REMOVE AFTER TESTING
         reader = csv.reader(file, delimiter = ",")
         alt_list = list(reader)
     for asset in alt_list:
@@ -25,9 +36,10 @@ def tensor_format():
         with open(path,"r", newline='', encoding='utf-8-sig') as file:
             reader = csv.reader(file, delimiter = ",")
             data = list(reader)
-            timesteps = (len(data)) - 1
-        add_zeros(path, timesteps, max_timesteps)
-        break
+            num_timesteps = (len(data)) - 1
+        asset_df = add_zeros(path, num_timesteps, max_timesteps)
+        tensor[asset[0]] = asset_df
+        break #REMOVE AFTER TESTING
+    print(tensor)
 
-
-tensor_format()
+tensor_format() #REMOVE AFTER TESTING
