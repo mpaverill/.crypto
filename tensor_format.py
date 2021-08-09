@@ -28,9 +28,9 @@ def tensor_format():
 
     # add zeros to missing data and insert into tensor
     with open('tensor_alts.csv', newline='', encoding='utf-8-sig') as file:
-        next(file, None)  #skip BTC REMOVE AFTER TESTING
         reader = csv.reader(file, delimiter = ",")
         alt_list = list(reader)
+        j = 1
     for asset in alt_list:
         path = 'DATA_BITFINEX/' + asset[0] + '.csv'
         with open(path,"r", newline='', encoding='utf-8-sig') as file:
@@ -39,7 +39,10 @@ def tensor_format():
             num_timesteps = (len(data)) - 1
         asset_df = add_zeros(path, num_timesteps, max_timesteps)
         tensor[asset[0]] = asset_df
-        break #REMOVE AFTER TESTING
+        print(str(j) + '/13 complete')
+        j += 1
+    tensor.to_csv('tensor.csv', index=False)
     print(tensor)
-
-tensor_format() #REMOVE AFTER TESTING
+    print('Done building tensor')
+    
+tensor_format()
