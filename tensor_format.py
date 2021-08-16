@@ -3,7 +3,6 @@
 # fill in tensor one asset at-a-time
 # Start date is 03/31/13
 # timestamps correspond to equivalent dates between assets
-# max timesteps = 3420458
 import csv
 from add_zeros import add_zeros
 import numpy as np
