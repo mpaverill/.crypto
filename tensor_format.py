@@ -7,6 +7,7 @@ import csv
 from add_zeros import add_zeros
 import numpy as np
 import pandas as pd
+from pandasgui import show
 
 def tensor_format():
     
@@ -40,8 +41,21 @@ def tensor_format():
         tensor[asset[0]] = asset_df
         print(str(j) + '/13 complete')
         j += 1
-    tensor.to_csv('tensor.csv', index=False)
+    del tensor['time']
+    del tensor['dogeusd']
+    del tensor['adausd']
+    del tensor['etcusd']
+    del tensor['bchnusd']
+    del tensor['dshusd']
+    del tensor['zecusd']
+    del tensor['dotusd']
+    del tensor['xlmusd']
+    # Get names of indexes for which column Age has value 30
+    indexNames = tensor[ tensor['eosusd'] == 0.0 ].index
+    # Delete these row indexes from dataFrame
+    tensor.drop(indexNames , inplace=True)
     print(tensor)
+    tensor.to_csv('tensor.csv', index=False)
     print('Done building tensor')
     
 tensor_format()
