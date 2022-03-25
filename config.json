@@ -67,8 +67,8 @@
     },
     "telegram": {
         "enabled": true,
-        "token": "2133972094:AAHsv2kcWof1IkDUjXLgmrkrqbSAeOjscHI",
-        "chat_id": "2111513124"
+        "token": "",
+        "chat_id": ""
     },
     "api_server": {
         "enabled": true,
@@ -76,7 +76,7 @@
         "listen_port": 8080,
         "verbosity": "error",
         "enable_openapi": false,
-        "jwt_secret_key": "7c8b00173934910b661dd5b2f43a31f7ee22288955185e42bff68971ad2722cf",
+        "jwt_secret_key": "",
         "CORS_origins": [],
         "username": "freqtrader",
         "password": "password"
